@@ -3,40 +3,23 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Setup Python Environment') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/shrutikwagh/python-jenkins-demo.git'
-            }
-        }
-
-        stage('Setup Python') {
-            steps {
-                sh """
+                bat '''
                 python -m venv venv
-                . venv/bin/activate
+                call venv\\Scripts\\activate
+                pip install --upgrade pip
                 pip install -r requirements.txt
-                """
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh """
-                . venv/bin/activate
+                bat '''
+                call venv\\Scripts\\activate
                 pytest -v
-                """
-            }
-        }
-
-        stage('Build Docker Image') {
-            when {
-                branch 'main'
-            }
-            steps {
-                sh """
-                docker build -t python-jenkins-demo .
-                """
+                '''
             }
         }
     }
