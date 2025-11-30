@@ -1,5 +1,5 @@
 import unittest
-from app.calculator import add, subtract, multiply, divide
+from app.calculator import add, subtract, multiply, divide,test
 
 class TestCalculator(unittest.TestCase):
 
@@ -20,3 +20,9 @@ class TestCalculator(unittest.TestCase):
             divide(10, 0)
         except ValueError:
             assert True
+
+    def test_test(self):
+        try:
+            test()
+        except Exception as e:
+            print(e,'E')
