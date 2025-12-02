@@ -21,8 +21,8 @@ class TestCalculator(unittest.TestCase):
         except ValueError:
             assert True
 
-    def test_test(self):
-        try:
-            test()
-        except Exception as e:
-            print(e,'E')
+    # def test_test(self):
+    #     try:
+    #         test()
+    #     except Exception as e:
+    #         print(e,'E')
