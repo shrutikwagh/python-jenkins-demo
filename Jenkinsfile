@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        DOCKERHUB = credentials('dockerhub-creds')
         IMAGE_NAME = "shrutikwagh/python-jenkins-demo"
     }
 
@@ -39,12 +39,12 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 bat """
-                docker login -u %DOCKERHUB_CREDENTIALS_USR% -p %DOCKERHUB_CREDENTIALS_PSW%
+                docker login -u %DOCKERHUB_USR% -p %DOCKERHUB_PSW%
                 """
             }
         }
 
-        stage('Push to DockerHub') {
+        stage('Push Image to DockerHub') {
             steps {
                 bat """
                 docker push %IMAGE_NAME%:latest
@@ -52,10 +52,13 @@ pipeline {
             }
         }
 
-        stage('Deploy Locally (Optional)') {
+        stage('Deploy Locally') {
+            when {
+                expression { return true }  // optional
+            }
             steps {
                 bat """
-                docker rm -f python_app || exit 0
+                docker rm -f python_app 2>nul
                 docker run -d --name python_app -p 5000:5000 %IMAGE_NAME%:latest
                 """
             }
@@ -64,10 +67,10 @@ pipeline {
 
     post {
         success {
-            echo 'Full CI/CD pipeline completed successfully!'
+            echo 'CI/CD completed successfully!'
         }
         failure {
-            echo 'CI/CD pipeline failed.'
+            echo 'CI/CD failed. Check logs.'
         }
     }
 }
