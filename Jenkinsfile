@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB = credentials('dockerhub-creds')
-        IMAGE_NAME = "shrutikwagh/python-jenkins-demo"
+        IMAGE_NAME = "shrutikawagh/python-jenkins-demo"
     }
 
     stages {
